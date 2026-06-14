@@ -2,9 +2,10 @@
 
 1. Create a GitHub repository and upload the contents of this folder.
 2. Open repository settings: `Settings -> Pages`.
-3. Set `Source` to `Deploy from a branch`.
-4. Select branch `main` and folder `/root`.
-5. Open the published URL. It will redirect to `quiz/index.html`.
+3. Set `Source` to `GitHub Actions`.
+4. Push to the `main` branch.
+5. Open `Actions -> Deploy GitHub Pages` and wait for the workflow to finish.
+6. Open the published URL. It will redirect to `quiz/index.html`.
 
 On iPhone:
 
