@@ -182,9 +182,10 @@ const questionBank = [
   },
   {
     id: "q24",
-    text: "Який тип спостереження зображено на малюнку з лежачим бійцем із біноклем?",
+    text: "Який тип спостереження зображено в описаній ситуації?",
     correct: "Наземне спостереження з укриття",
-    visual: "observation",
+    scenario:
+      "Боєць перебуває низько над землею за природним або підготовленим прикриттям. Корпус майже не виступає над лінією місцевості, зброя поруч, погляд спрямований у бік імовірного противника через оптичний прилад. Позиція обрана так, щоб мати сектор огляду й водночас не відкриватися на повний зріст.",
     options: [
       "Наземне спостереження з укриття",
       "Наземне спостереження з відкритої позиції",
@@ -194,9 +195,10 @@ const questionBank = [
   },
   {
     id: "q25",
-    text: "Які дії зазначені на малюнку, де боєць пригинається під час обстрілу?",
+    text: "Які дії зображено в описаній ситуації?",
     correct: "Пригнутись",
-    visual: "duck",
+    scenario:
+      "Під час загрози обстрілу військовослужбовець різко зменшує силует, опускає корпус нижче, тримає зброю під контролем і намагається швидко зайняти безпечніше положення відносно укриття. Рух короткий, без випрямлення на повний зріст і без виходу на відкрите місце.",
     options: ["Пригнутись", "Змінити магазин", "Подати сигнал рукою", "Розпочати рух строєм"],
   },
 ];
@@ -222,11 +224,13 @@ const clearButton = document.querySelector("#clearButton");
 const restartButton = document.querySelector("#restartButton");
 
 function seededRandom(seed) {
-  let value = seed % 2147483647;
-  if (value <= 0) value += 2147483646;
+  let value = seed >>> 0;
   return function random() {
-    value = (value * 16807) % 2147483647;
-    return (value - 1) / 2147483646;
+    value += 0x6D2B79F5;
+    let next = value;
+    next = Math.imul(next ^ (next >>> 15), next | 1);
+    next ^= next + Math.imul(next ^ (next >>> 7), next | 61);
+    return ((next ^ (next >>> 14)) >>> 0) / 4294967296;
   };
 }
 
@@ -245,14 +249,33 @@ function buildVariant(variantId) {
   return shuffleWithSeed(questionBank, variant.questionSeed).map((question, index) => ({
     ...question,
     displayNumber: index + 1,
-    options: shuffleWithSeed(question.options, variant.optionSeed + index * 17),
+    options: placeCorrectOption(
+      shuffleWithSeed(question.options, variant.optionSeed + index * 17),
+      question.correct,
+      balancedCorrectPosition(index, variant.optionSeed)
+    ),
   }));
+}
+
+function balancedCorrectPosition(index, seed) {
+  const group = Math.floor(index / 4);
+  const pattern = shuffleWithSeed([0, 1, 2, 3], seed + group * 97);
+  return pattern[index % 4];
+}
+
+function placeCorrectOption(options, correct, targetIndex) {
+  const currentIndex = options.indexOf(correct);
+  if (currentIndex < 0 || currentIndex === targetIndex) return options;
+
+  const copy = [...options];
+  [copy[currentIndex], copy[targetIndex]] = [copy[targetIndex], copy[currentIndex]];
+  return copy;
 }
 
 function renderQuiz() {
   quizEl.innerHTML = state.questions
     .map((question) => {
-      const visual = renderVisual(question.visual);
+      const scenario = renderScenario(question.scenario);
       const answers = question.options
         .map((option, optionIndex) => {
           const inputId = `${question.id}-${optionIndex}`;
@@ -271,7 +294,7 @@ function renderQuiz() {
             <span class="number">${question.displayNumber}</span>
             <p class="question-title">${question.text}</p>
           </div>
-          ${visual}
+          ${scenario}
           <div class="answers">${answers}</div>
         </article>
       `;
@@ -284,28 +307,23 @@ function renderQuiz() {
   updateProgress();
 }
 
-function renderVisual(type) {
-  if (type === "observation") {
-    return `
-      <figure class="question-visual" aria-label="Боєць лежить за укриттям і веде спостереження через бінокль">
-        <img src="assets/looking-through-binocular.png" alt="Людина сидить і дивиться в бінокль">
-      </figure>
-    `;
-  }
+function renderScenario(text) {
+  if (!text) return "";
 
-  if (type === "duck") {
-    return `
-      <figure class="question-visual" aria-label="Боєць пригинається під час обстрілу">
-        <img src="assets/soldier-under-fire.png" alt="Силует солдата під обстрілом">
-      </figure>
-    `;
-  }
+  return `
+    <div class="scenario">
+      <span class="scenario-label">Опис зображення</span>
+      <p>${escapeHtml(text)}</p>
+    </div>
+  `;
+}
 
-  return "";
+function escapeHtml(value) {
+  return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 
 function escapeAttr(value) {
-  return String(value).replaceAll("&", "&amp;").replaceAll('"', "&quot;");
+  return escapeHtml(value).replaceAll('"', "&quot;");
 }
 
 function getSelectedAnswer(questionId) {

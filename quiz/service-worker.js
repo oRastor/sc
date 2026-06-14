@@ -1,17 +1,15 @@
-const CACHE_NAME = "sergeant-courses-quiz-v1";
+const CACHE_NAME = "sergeant-courses-quiz-v2";
 
 const ASSETS = [
   "./",
   "./index.html",
   "./open-form.html",
-  "./styles.css",
-  "./app.js",
-  "./open-form.js",
-  "./register-sw.js",
+  "./styles.css?v=3",
+  "./app.js?v=3",
+  "./open-form.js?v=3",
+  "./register-sw.js?v=3",
   "./manifest.webmanifest",
   "./assets/app-icon.svg",
-  "./assets/looking-through-binocular.png",
-  "./assets/soldier-under-fire.png",
 ];
 
 self.addEventListener("install", (event) => {

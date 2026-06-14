@@ -294,21 +294,25 @@ input:focus-visible {
   font-weight: 800;
 }
 
-.question-visual {
-  margin: 0;
-  padding: 14px 18px 0;
-  background: var(--panel);
+.scenario {
+  margin: 14px 18px 0;
+  padding: 14px;
+  border: 1px solid #cfd8ca;
+  border-radius: 8px;
+  background: #f8faf4;
 }
 
-.question-visual img {
+.scenario-label {
   display: block;
-  width: min(520px, 100%);
-  height: auto;
-  max-height: 280px;
-  object-fit: contain;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: #eef2e9;
+  margin-bottom: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.scenario p {
+  margin: 0;
 }
 
 .answers {

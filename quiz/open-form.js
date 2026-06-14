@@ -218,11 +218,13 @@ const pickModeButton = document.querySelector("#pickModeButton");
 const shuffleButton = document.querySelector("#shuffleButton");
 
 function seededRandom(seed) {
-  let value = seed % 2147483647;
-  if (value <= 0) value += 2147483646;
+  let value = seed >>> 0;
   return function random() {
-    value = (value * 16807) % 2147483647;
-    return (value - 1) / 2147483646;
+    value += 0x6D2B79F5;
+    let next = value;
+    next = Math.imul(next ^ (next >>> 15), next | 1);
+    next ^= next + Math.imul(next ^ (next >>> 7), next | 61);
+    return ((next ^ (next >>> 14)) >>> 0) / 4294967296;
   };
 }
 
