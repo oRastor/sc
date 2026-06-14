@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Вхідний контроль</title>
+    <meta name="theme-color" content="#236b52">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Сержантські курси">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="assets/app-icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="topbar" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Курси сержантів</p>
+          <h1 id="page-title">Вхідний контроль</h1>
+        </div>
+        <div class="scorebox" aria-live="polite">
+          <span id="progressText">0 / 23</span>
+          <span>відповідей</span>
+        </div>
+      </section>
+
+      <section class="controls" aria-label="Налаштування тесту">
+        <div class="field">
+          <label for="variantSelect">Варіант</label>
+          <select id="variantSelect">
+            <option value="1">Варіант 1</option>
+            <option value="2">Варіант 2</option>
+            <option value="3">Варіант 3</option>
+            <option value="4">Варіант 4</option>
+          </select>
+        </div>
+        <button id="restartButton" type="button">Новий прохід</button>
+        <a class="text-link" href="open-form.html">Відкрита форма</a>
+      </section>
+
+      <section id="quiz" class="quiz" aria-label="Питання тесту"></section>
+
+      <section class="actions" aria-label="Дії з тестом">
+        <button id="checkButton" type="button" class="primary">Перевірити</button>
+        <button id="clearButton" type="button">Очистити відповіді</button>
+      </section>
+
+      <section id="result" class="result" aria-live="polite" hidden></section>
+    </main>
+
+    <script src="app.js"></script>
+    <script src="register-sw.js"></script>
+  </body>
+</html>

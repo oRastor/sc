@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Відкрита форма</title>
+    <meta name="theme-color" content="#236b52">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Сержантські курси">
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" href="assets/app-icon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <main class="shell">
+      <section class="topbar" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Курси сержантів</p>
+          <h1 id="page-title">Відкрита форма</h1>
+        </div>
+        <div class="scorebox" aria-live="polite">
+          <span id="openProgress">1 / 40</span>
+          <span>питання</span>
+        </div>
+      </section>
+
+      <section class="controls" aria-label="Режим тренування">
+        <div class="segmented" role="tablist" aria-label="Режим">
+          <button id="cardsModeButton" type="button" class="mode-button active">Картки</button>
+          <button id="pickModeButton" type="button" class="mode-button">Вибери 4 з 7</button>
+        </div>
+        <button id="shuffleButton" type="button">Перемішати</button>
+        <a class="text-link" href="index.html">Тести</a>
+      </section>
+
+      <section id="trainer" class="trainer" aria-live="polite"></section>
+    </main>
+
+    <script src="open-form.js"></script>
+    <script src="register-sw.js"></script>
+  </body>
+</html>
